@@ -81,48 +81,46 @@ def show_video(video_path):
     video_clip = VideoFileClip(video_path)
     video_clip.preview()"""
             
-def main():  
- # Définit la taille de la fenêtre
-    root = tk.Tk()
-    root.title("SignTrad")
-    root.state('zoomed')
 
-    # Création d'un canevas (Canvas) pour le fond d'écran 
-    canvas = tk.Canvas(root, width=1000, height=600, bg="white")
-    canvas.pack(expand=True, fill="both")  # Le canevas s'étend pour remplir toute la fenêtre
+# Définit la taille de la fenêtre
+root = tk.Tk()
+root.title("SignTrad")
+root.state('zoomed')
 
-    # Chargement de l'image et conversion en ImageTk
-    image_path = "./Files/images_interface/SignTrad.png"
-    image = Image.open(image_path)
-    image = image.resize((1500, 1100))
-    photo = ImageTk.PhotoImage(image)
+# Création d'un canevas (Canvas) pour le fond d'écran 
+canvas = tk.Canvas(root, width=1000, height=600, bg="white")
+canvas.pack(expand=True, fill="both")  # Le canevas s'étend pour remplir toute la fenêtre
 
-    # Création du label avec l'image et placement sur le canevas
-    label_image = tk.Label(canvas, image=photo, bg="white")
-    label_image.pack(expand=True)
+# Chargement de l'image et conversion en ImageTk
+image_path = "./Files/images_interface/SignTrad.png"
+image = Image.open(image_path)
+image = image.resize((1500, 1100))
+photo = ImageTk.PhotoImage(image)
 
-    # Création d'une frame pour afficher les messages
-    message_frame = tk.Frame(root, bg="white")
-    message_frame.place(relx=0.5, rely=0.9, anchor="center", relwidth=0.8, relheight=0.1)
+# Création du label avec l'image et placement sur le canevas
+label_image = tk.Label(canvas, image=photo, bg="white")
+label_image.pack(expand=True)
 
-    # Label pour afficher le chemin du fichier sélectionné et placement sur le canevas
-    label_file_path = tk.Label(message_frame, text="", bg="white", fg="white")
-    label_file_path.pack(expand=True)
+# Création d'une frame pour afficher les messages
+message_frame = tk.Frame(root, bg="white")
+message_frame.place(relx=0.5, rely=0.9, anchor="center", relwidth=0.8, relheight=0.1)
 
-    # Appliquer un style au bouton
-    style = ttk.Style()
-    style.configure("TButton",
-                    font=("Helvetica", 14),  # Taille de l'écriture
-                    padding=40,  # Padding pour augmenter la taille du bouton
-                    relief="flat",  # Suppression des bordures natives
-                    background="white",  # Couleur de fond du bouton
-                    foreground="black")  # Couleur du texte
+# Label pour afficher le chemin du fichier sélectionné et placement sur le canevas
+label_file_path = tk.Label(message_frame, text="", bg="white", fg="white")
+label_file_path.pack(expand=True)
 
-    # Remplacer le bouton par un bouton TTK avec style personnalisé
-    select_button = ttk.Button(root, text="Démarrer", command=select_video, style="TButton")
-    select_button.place(relx=0.75, rely=0.5, anchor='center')
+# Appliquer un style au bouton
+style = ttk.Style()
+style.configure("TButton",
+                font=("Helvetica", 14),  # Taille de l'écriture
+                padding=40,  # Padding pour augmenter la taille du bouton
+                relief="flat",  # Suppression des bordures natives
+                background="white",  # Couleur de fond du bouton
+                foreground="black")  # Couleur du texte
 
-    root.mainloop()
+# Remplacer le bouton par un bouton TTK avec style personnalisé
+select_button = ttk.Button(root, text="Démarrer", command=select_video, style="TButton")
+select_button.place(relx=0.75, rely=0.5, anchor='center')
 
-if __name__ == "__main__":
-    main()
+root.mainloop()
+
