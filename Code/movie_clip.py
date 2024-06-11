@@ -3,7 +3,7 @@ from moviepy.editor import VideoFileClip, concatenate_videoclips, CompositeVideo
 def word_to_clip(word_list):
     clip_list = list()
     for word in word_list:
-        clip_list.append("./Files/Avatar_SignTrad/"+word+".mp4")
+        clip_list.append("./Files/Avatar_SignTrad/"+word+".mov")
     return clip_list
 
 
@@ -14,6 +14,7 @@ def concatenate_sign_clip(word_list):
 
     final_clip = concatenate_videoclips(clips, method="compose")
     final_clip.write_videofile("./Files/video/overlay.mp4", codec="libx264")
+    
 
 def clip_and_overlay():
     main = VideoFileClip("./Files/video/video.mp4")
@@ -29,3 +30,5 @@ def clip_and_overlay():
     """
     final = CompositeVideoClip([main, overlay.set_pos(overlay_position)])
     final.write_videofile("video_finale.mp4", codec="libx264")
+
+

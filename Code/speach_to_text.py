@@ -4,7 +4,8 @@ import subprocess
 
 
 def main():
-    video_path = os.path.abspath("./Speech to Text/video.mp4")
+    #video_path = os.path.abspath("./Speech to Text/video.mp4")
+    video_path = os.path.abspath(r"C:\Users\Nath\Desktop\test.mp4")
     audio_path = os.path.splitext(video_path)[0] + ".wav"
 
 
@@ -14,7 +15,7 @@ def main():
 
     extract_audio(video_path, audio_path)
     
-    model = whisper.load_model("base")
+    model = whisper.load_model("medium")
     result = model.transcribe(audio_path)
 
     transcription_path = os.path.splitext(video_path)[0] + "_transcription.txt"
