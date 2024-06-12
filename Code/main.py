@@ -13,7 +13,9 @@ from PIL import Image, ImageTk
 #from moviepy.editor import VideoFileClip
 import cv2
 import tkinter.ttk as ttk 
-
+import lemmma
+from speach_to_text import speach_to_text
+from movie_clip import parsed_to_clip
 def select_video():
     file_path = filedialog.askopenfilename(filetypes=[("Video files", "*.mp4;*.avi;*.mov")])
     if file_path:
@@ -22,9 +24,13 @@ def select_video():
             shutil.copyfile(file_path, destination_path)
             label_file_path.config(text="La vidéo a été enregistrée avec succès.", fg="green")
             #response = messagebox.askyesno( "Souhaitez-vous afficher la vidéo ?")
-            response = custom_yesno_dialog("Souhaitez-vous afficher la vidéo ?")
+                
+            
+
+            response = custom_yesno_dialog("Souhaitez-vous traduire la vidéo avec un overlay en LSF?")
             if response:
-                show_video(destination_path)
+                
+                show_video(r"./Files/video/video_finale.mp4")
         except Exception as e:
             label_file_path.config(text="Erreur lors de l'enregistrement de la vidéo : " + str(e), fg="red")
             
@@ -35,6 +41,9 @@ def custom_yesno_dialog(message): #permet d'afficher la fenêtre qui demande à 
     
     def on_yes():
         response[0] = True
+        text = speach_to_text()
+        parsed = lemmma.parse(text)
+        parsed_to_clip(parsed)
         dialog.destroy()
     
     def on_no():

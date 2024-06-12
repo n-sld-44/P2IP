@@ -1,62 +1,45 @@
-import spacy
+import simplemma
 import re
-
-EXCEPTION = ["cela","toi","pourquoi",]
-
-def read_file(file_path):
-    encodings = ['utf-8', 'iso-8859-1', 'latin1']
-    for encoding in encodings:
-        try:
-            with open(file_path, 'r', encoding=encoding) as file:
-                return file.read()
-        except UnicodeDecodeError:
-            continue
-    raise ValueError("None of the encodings worked")
+from dictionnaire import FIXED_EXPRESSION, STOP_WORDS, DICTIONNAIRE 
 
 
+def replace_expressions(text, expressions):
+    for i, expr in enumerate(expressions):
+        text = text.replace(expr, f"EXPR{i}")
+    return text, {f"EXPR{i}": expr for i, expr in enumerate(expressions)}
 
-def test(text):
-    nlp = spacy.load("fr_core_news_lg")
+def split(text):
+    sentence = re.split(r"[.!?,]| et",text)
+    sentence = [sentence.strip() for sentence in sentence if sentence.strip()]
+    return sentence
+
+def lemmatize(text):
     
-    doc = nlp(text)
-    sentences = list(doc.sents)
-    
-
-    # Process each sentence and print out details of each token
-    for sent in sentences:
-        print(f"Processing sentence: {sent.text}")
-        for token in sent:
-            if token.is_stop:
-
-                print(f"  Token: {token.text}")
-            print(f"    Part of Speech: {token.pos_}")
-            print(f"    Dependency: {token.dep_}")
-                print(f"    Lemma: {token.lemma_}")
-         #   print(f"    Head: {token.head.text}")
-         #   print(f"    Is Alpha: {token.is_alpha}")
-         #   print(f"    Is Stop Word: {token.is_stop}")
-        print()
-
-
-def tokenize(text):
-    nlp = spacy.load("fr_core_news_lg")
-    doc = nlp(text)
-    sentences = list(doc.sents)
-    clean_sentences = []
-    for sent in sentences:
-        s = []
-        for token in sent:
-            if token.tag_ == 'PUNCT':
-                pass
-            if token.is_stop and token.lemma not in EXCEPTION:
-                pass
+    text_with_tokens, token_dict = replace_expressions(text.lower(), FIXED_EXPRESSION)
+    sents = split(text_with_tokens)
+    clean = list()
+    for sent in sents:
+        s = list()
+        i = sent.split()
+        for j in i :
+            if j in token_dict:
+                s.append(token_dict[j].lower())
             else:
-                s.append(token)
-        clean_sentences.append(s)
+                a = simplemma.lemmatize(j.lower(),'fr')
+                if a not in STOP_WORDS:
+                    s.append(a)
+
+        clean.append(s)
+    
+    
+    return clean
 
 
 
-
-
-
-test(" Bonjour, ça va ? Oui, super et toi ? Je suis fatigué. Ah bon, pourquoi ? J'ai très mal dormi la nuit dernière. Je suis désolé. Que fais-tu, ça nous dit prochain ? Le week-end nous aimons nous balader en famille et je vais au restaurant avec des amis. Et toi ? J'adore aller courir au parc en fin de journée. Tu m'accompagne ? Je t'accompagne.")
+def parse(text):
+    sentences_tokenized = lemmatize(text)
+    sentences_parsed = list()
+    for i in sentences_tokenized:
+        sent = sorted(i,key=lambda x: DICTIONNAIRE[x])
+        sentences_parsed.append(sent)
+    return sentences_parsed

@@ -1,14 +1,16 @@
 from moviepy.editor import VideoFileClip, concatenate_videoclips, CompositeVideoClip, vfx
+from dictionnaire import PATH_DICT
 
-def word_to_clip(word_list):
+def word_to_clip(parsed):
     clip_list = list()
-    for word in word_list:
-        clip_list.append("./Files/Avatar_SignTrad/"+word+".mov")
+    for i in parsed:
+        for j in i:
+            clip_list.append(PATH_DICT[j])
     return clip_list
 
 
-def concatenate_sign_clip(word_list):
-    clip_list = word_to_clip(word_list)
+def concatenate_sign_clip(parsed):
+    clip_list = word_to_clip(parsed)
 
     clips = [VideoFileClip(file) for file in clip_list]
 
@@ -34,5 +36,9 @@ def clip_and_overlay():
     final.write_videofile("./Files/video/video_finale.mp4", codec="libx264")
 
 
-concatenate_sign_clip(['salut','ça_va','oui','super','et_toi','être_fatigué','ah_bon','pourquoi','nuit','récemment','dormir','mal','désolé','que_fais_tu','samedi','prochain','week_end','aimer','se_balader','famille','ensemble','aller','restaurant','amis','ensemble','et_toi', 'adorer','aller','courir','journée','fin','parc','accompagner','accompagner_tu'])
-clip_and_overlay()
+def parsed_to_clip(parsed):
+    concatenate_sign_clip(parsed)
+    clip_and_overlay()    
+
+
+parsed_to_clip([['bonjour'], ['ça va'], ['oui'], ['super', 'et toi'], ['fatigué'], ['ah bon'], ['pourquoi'], ['nuit', 'dernier', 'dormir', 'mal'], ['désolé'], ['que fais-tu'], ['samedi', 'prochain'], ['week-end', 'aimer', 'balader', 'famille'], ['restaurant', 'aller', 'ami'], ['et toi'], ["j'adore", 'aller', 'courir', 'parc', 'fin', 'journée'], ["m'accompagne"], ["t'accompagne"]])
