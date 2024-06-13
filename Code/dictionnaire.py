@@ -36,7 +36,7 @@ DICTIONNAIRE = {
     'journée' : 3,
     'fin':3,
     'parc':3,
-    "m'accompagne":2,
+    "m'accompagnes":2,
     "t'accompagne":2
     
 }
@@ -72,5 +72,6 @@ PATH_DICT = {
     'fin': './Files/Avatar_SignTrad/fin.mov',
     'parc': './Files/Avatar_SignTrad/parc.mov',
     "m'accompagne": './Files/Avatar_SignTrad/accompagner.mov',
+    "m'accompagnes": './Files/Avatar_SignTrad/accompagner.mov',
     "t'accompagne": './Files/Avatar_SignTrad/accompagner_tu.mov'
 }

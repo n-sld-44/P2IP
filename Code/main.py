@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
 Created on Sat Apr 20 18:01:06 2024
@@ -7,32 +6,32 @@ Created on Sat Apr 20 18:01:06 2024
 """
 
 import tkinter as tk
-from tkinter import filedialog, messagebox, PhotoImage
+from tkinter import filedialog, messagebox
 import shutil
 from PIL import Image, ImageTk
-#from moviepy.editor import VideoFileClip
+from moviepy.editor import VideoFileClip
 import cv2
 import tkinter.ttk as ttk 
-import lemmma
-from speach_to_text import speach_to_text
-from movie_clip import parsed_to_clip
+
+
+
+
 def select_video():
+    label_file_path.config(text="")  # Réinitialise le message au début de la fonction
+    
     file_path = filedialog.askopenfilename(filetypes=[("Video files", "*.mp4;*.avi;*.mov")])
     if file_path:
-        destination_path = r".\Files\video\video.mp4"  # Spécifiez votre chemin d'accès de destination ici
+        destination_path = r"./Files/video/video.mp4"  # Spécifiez votre chemin d'accès de destination ici
         try:
             shutil.copyfile(file_path, destination_path)
             label_file_path.config(text="La vidéo a été enregistrée avec succès.", fg="green")
-            #response = messagebox.askyesno( "Souhaitez-vous afficher la vidéo ?")
-                
-            
-
-            response = custom_yesno_dialog("Souhaitez-vous traduire la vidéo avec un overlay en LSF?")
+            response = custom_yesno_dialog("Souhaitez-vous afficher la vidéo ?")
             if response:
                 
-                show_video(r"./Files/video/video_finale.mp4")
+                show_video("./Files/video/video_finale.mp4")
         except Exception as e:
             label_file_path.config(text="Erreur lors de l'enregistrement de la vidéo : " + str(e), fg="red")
+
             
 
 def custom_yesno_dialog(message): #permet d'afficher la fenêtre qui demande à l'utilisateur s'il souhaite visionner la vidéo
@@ -41,9 +40,13 @@ def custom_yesno_dialog(message): #permet d'afficher la fenêtre qui demande à 
     
     def on_yes():
         response[0] = True
-        text = speach_to_text()
-        parsed = lemmma.parse(text)
-        parsed_to_clip(parsed)
+        import speach_to_text
+        text = speach_to_text.speach_to_text()
+        import lemmma
+        liste_signe = lemmma.parse(text)
+        import movie_clip
+        movie_clip.parsed_to_clip(liste_signe)
+
         dialog.destroy()
     
     def on_no():
@@ -52,7 +55,6 @@ def custom_yesno_dialog(message): #permet d'afficher la fenêtre qui demande à 
     
     dialog = tk.Toplevel()
     dialog.title("Confirmation")
-    dialog.iconphoto(False,logo)
     
     label = tk.Label(dialog, text=message)
     label.pack(padx=20, pady=10)
@@ -83,23 +85,36 @@ def show_video(video_path):
     cap.release()
     cv2.destroyAllWindows()
 
+
+def show_video(video_path):
+    clip = VideoFileClip(video_path)
+    clip.preview()
+    clip.close()
       
-            
+def exit_fullscreen(event):
+    root.attributes('-fullscreen', False)
+    root.state('zoomed')  # Revenir à l'état maximisé, mais pas en plein écran
+
+
 # Définit la taille de la fenêtre   
 root = tk.Tk()
 root.title("SignTrad")
-root.state('zoomed')  
+root.attributes('-fullscreen', True)  # Mettre la fenêtre en plein écran
+root.bind('<Escape>', exit_fullscreen)  # Associer la touche 'Escape' pour quitter le plein écran         
 
-logo = PhotoImage(file='./Files/images_interface/logo.png')
-root.iconphoto(False, logo)
-# Création d'un canevas (Canvas) pour le fond d'écran bleu marine
-canvas = tk.Canvas(root, width=1000, height=600, bg="white")
-canvas.pack(expand=True, fill="both")  # Le canevas s'étend pour remplir toute la fenêtre
+
+# Obtenez la taille de l'écran
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+# Création d'un canevas (Canvas) pour le fond d'écran blanc
+canvas = tk.Canvas(root, width=screen_width, height=screen_height, bg="white")
+canvas.pack(expand=True, fill="both")
 
 # Chargement de l'image et conversion en ImageTk
 image_path = r"./Files/images_interface/Interface.png"
 image = Image.open(image_path)
-image = image.resize((1500, 1100))
+image = image.resize((screen_width, screen_height))
 photo = ImageTk.PhotoImage(image)
 
 # Création du label avec l'image et placement sur le canevas
