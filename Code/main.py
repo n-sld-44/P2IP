@@ -12,12 +12,16 @@ from PIL import Image, ImageTk
 from moviepy.editor import VideoFileClip
 import cv2
 import tkinter.ttk as ttk 
-
+import os
 
 
 
 def select_video():
+
     label_file_path.config(text="")  # Réinitialise le message au début de la fonction
+    for filename in os.listdir('Files/video') :
+        os.remove('Files/video' + "/" + filename)
+
     
     file_path = filedialog.askopenfilename(filetypes=[("Video files", "*.mp4;*.avi;*.mov")])
     if file_path:
@@ -45,7 +49,7 @@ def custom_yesno_dialog(message): #permet d'afficher la fenêtre qui demande à 
         import lemmma
         liste_signe = lemmma.parse(text)
         import movie_clip
-        movie_clip.parsed_to_clip(liste_signe)
+        movie_clip.parsed_to_clip(liste_signe,5)
 
         dialog.destroy()
     

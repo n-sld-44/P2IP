@@ -18,7 +18,7 @@ def concatenate_sign_clip(parsed):
     final_clip.write_videofile("./Files/video/overlay.mp4", codec="libx264")
     
 
-def clip_and_overlay():
+def clip_and_overlay(i):
     main = VideoFileClip("./Files/video/video.mp4")
     overlay = VideoFileClip("./Files/video/overlay.mp4")
 
@@ -36,9 +36,8 @@ def clip_and_overlay():
     final.write_videofile("./Files/video/video_finale.mp4", codec="libx264")
 
 
-def parsed_to_clip(parsed):
+def parsed_to_clip(parsed,i):
     concatenate_sign_clip(parsed)
-    clip_and_overlay()    
+    clip_and_overlay(i)    
 
 
-parsed_to_clip([['bonjour'], ['ça va'], ['oui'], ['super', 'et toi'], ['fatigué'], ['ah bon'], ['pourquoi'], ['nuit', 'dernier', 'dormir', 'mal'], ['désolé'], ['que fais-tu'], ['samedi', 'prochain'], ['week-end', 'aimer', 'balader', 'famille'], ['restaurant', 'aller', 'ami'], ['et toi'], ["j'adore", 'aller', 'courir', 'parc', 'fin', 'journée'], ["m'accompagne"], ["t'accompagne"]])
