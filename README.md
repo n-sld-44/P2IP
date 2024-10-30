@@ -1,8 +1,10 @@
-Projet d'étudiants en 3eme année d'école d'ingénieur. 
+Student project in Third year engineering School
 
-Réalisation d'une plateforme de traduction d'un audio en langage des signes.
+Creating an interface to translate the audio flow of a video to a signed visual traduction via an overlay on the original Video.
 
-- Extraction du flux audio de la vidéo
-- Speech To Text
-- Tokenisation
-- Génération de la vidéo avec les signes
+- Extracting audio from video
+- SpeechToText
+- Tokenization
+- Translation to LSF
+- Generation of signs
+  
